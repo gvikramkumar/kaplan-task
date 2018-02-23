@@ -1,1 +1,33 @@
 /* You can add global styles to this file, and also import other style files */
+
+.main-card{
+  margin: 4%;
+  border: none;
+}
+.card-content{
+  border: solid 1px #80808078;
+  padding-top: 1%;
+  padding-bottom: 1%;
+  background-color: white;
+}
+.row-content{
+  border: solid 1px #8080801f;
+  padding-top: 1%;
+  padding-bottom: 1%;
+  background-color: white;
+}
+.subject-photo{
+  border-radius: 30px;
+  height: 2rem;
+}
+.title{
+  font-weight: bold;
+  padding-bottom: 1%;
+}
+.inst-font{
+  font-weight: 400;
+}
+.main-row{
+      padding-bottom: 1%;
+      padding-top: 1%;
+}
