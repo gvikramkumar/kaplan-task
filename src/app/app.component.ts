@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-root',
@@ -9,120 +11,97 @@ export class AppComponent implements OnInit{
 
   public channelList:any;
   public uniqDates:any;
-  public output:any
+
+  constructor(private http: HttpClient){ }
   ngOnInit() {
-    this.channelList = [
-    {
-      "title":"Nulla convallis dolor quis erat.",
-      "description":"Sed hendrerit luctus finibus. Sed justo dui, vulputate ac suscipit condimentum, porttitor sed dolor. Ut eu justo at metus dapibus facilisis a quis libero. Integer lectus turpis, pretium a tincidunt.",
-      "instructorName":"Erat Libero",
-      "instructorPhotoUrl":"https://placeholdit.imgix.net/~text?txtsize=34&txt=C&w=60&h=60",
-      "subjectPhotoUrl":"https://placeholdit.imgix.net/~text?txtsize=34&txt=C&w=60&h=60",
-      "time":"2016-01-03 22:00:00"
-    },
-    {
-      "title":"Pellentesque sagittis porttitor tincidunt. Sed.",
-      "description":"Curabitur eu velit vitae massa varius rhoncus. Proin eu ligula venenatis, consequat libero maximus, varius lorem. Morbi a dignissim nibh. Suspendisse eget ornare nunc, sollicitudin lacinia elit. Sed in volutpat.",
-      "instructorName":"Scelerisque Via",
-      "instructorPhotoUrl":"https://placeholdit.imgix.net/~text?txtsize=34&txt=D&w=60&h=60",
-      "subjectPhotoUrl":"https://placeholdit.imgix.net/~text?txtsize=34&txt=B&w=60&h=60",
-      "time":"2016-01-01 21:00:00"
-    },
-    {
-      "title":"Phasellus a interdum purus, non.",
-      "description":"Pellentesque bibendum, nulla tincidunt consequat rutrum, sem lacus mattis quam, cursus semper lectus nibh id diam. Duis ullamcorper, odio ac blandit pretium, purus est varius ante, eu aliquam elit tortor.",
-      "instructorName":"Cras Ac",
-      "instructorPhotoUrl":"https://placeholdit.imgix.net/~text?txtsize=34&txt=B&w=60&h=60",
-      "subjectPhotoUrl":"https://placeholdit.imgix.net/~text?txtsize=34&txt=A&w=60&h=60",
-      "time":"2016-01-04 21:00:00"
-    },
-    {
-      "title":"Donec viverra, magna ut porttitor",
-      "description":"Maecenas finibus ullamcorper aliquam. Integer eros neque, placerat id convallis non, rutrum tempor nisi. In venenatis vulputate feugiat. Vivamus porttitor, odio sit amet volutpat maximus, magna est maximus sapien, et.",
-      "instructorName":"Posuere Una",
-      "instructorPhotoUrl":"https://placeholdit.imgix.net/~text?txtsize=34&txt=E&w=60&h=60",
-      "subjectPhotoUrl":"https://placeholdit.imgix.net/~text?txtsize=34&txt=A&w=60&h=60",
-      "time":"2016-01-03 20:00:00"
-    },
-    {
-      "title":"In quis elit ut ipsum.",
-      "description":"Praesent fermentum tortor non arcu imperdiet, egestas vestibulum augue tempus. Nunc sollicitudin tincidunt metus placerat luctus. Praesent at finibus nibh. Donec auctor feugiat hendrerit. Nulla massa augue, mattis quis fermentum.",
-      "instructorName":"Aliquam Nisl",
-      "instructorPhotoUrl":"https://placeholdit.imgix.net/~text?txtsize=34&txt=D&w=60&h=60",
-      "subjectPhotoUrl":"https://placeholdit.imgix.net/~text?txtsize=34&txt=C&w=60&h=60",
-      "time":"2016-01-05 19:00:00"
-    },
-    {
-      "title":"Ut consequat risus id lacus.",
-      "description":"Nunc hendrerit blandit elit sed rhoncus. Sed interdum tempus enim vel ornare. Nulla facilisi. Morbi rhoncus turpis in justo sollicitudin, sit amet varius magna fringilla. Fusce porta magna neque, nec.",
-      "instructorName":"Vestibulum Ante",
-      "instructorPhotoUrl":"https://placeholdit.imgix.net/~text?txtsize=34&txt=B&w=60&h=60",
-      "subjectPhotoUrl":"https://placeholdit.imgix.net/~text?txtsize=34&txt=A&w=60&h=60",
-      "time":"2016-01-05 22:00:00"
-    },
-    {
-      "title":"Sed mauris dui, ornare ut.",
-      "description":"Vivamus pulvinar, nisl fermentum cursus tincidunt, tortor justo dignissim metus, consectetur facilisis nulla tellus ut nisi. Cras in lorem neque. Vivamus sed odio in libero finibus consequat. Maecenas facilisis nisi.",
-      "instructorName":"Integer Laciana",
-      "instructorPhotoUrl":"https://placeholdit.imgix.net/~text?txtsize=34&txt=E&w=60&h=60",
-      "subjectPhotoUrl":"https://placeholdit.imgix.net/~text?txtsize=34&txt=B&w=60&h=60",
-      "time":"2016-01-01 20:00:00"
-    },
-    {
-      "title":"In hac habitasse platea dictumst.",
-      "description":"Suspendisse consequat egestas posuere. Integer diam diam, gravida ac condimentum a, vulputate et quam. Fusce eleifend leo sed diam cursus, nec ultrices orci luctus. Vivamus eget eros aliquam, suscipit sapien.",
-      "instructorName":"Ipsum Primis",
-      "instructorPhotoUrl":"https://placeholdit.imgix.net/~text?txtsize=34&txt=A&w=60&h=60",
-      "subjectPhotoUrl":"https://placeholdit.imgix.net/~text?txtsize=34&txt=D&w=60&h=60",
-      "time":"2016-01-03 21:00:00"
-    }
-  ];
+    this.getChannelList();
+  } // close of ngonit
 
-  this.formatObj(this.channelList);
+    getChannelList(){
+      this.http.get('../assets/channelList.json').subscribe(data => {
+          this.channelList = data;
+          console.log("list : "+ this.channelList);
+          this.uniqDates = this.formatObj(this.channelList);
+          console.log("uniqDates : "+ this.uniqDates);
+        });
+      }
+
+      formatObj(list):any {
+        console.log("format called.. ");
+        var dates = [], l = list.length, i;
+        let uniqDates = [];
+        let vik = [];
+        for( i=0; i<l; i++) {
+            let date = list[i].time.split(" ")[0];
+            if( dates[list[i].time.split(" ")[0]]) {
+              // uniqDates[list[i].time.split(" ")[0]].push(list[i]);
+
+              continue
+            };
+            dates[list[i].time.split(" ")[0]] = true;
+            // uniqDates[list[i].time.split(" ")[0]] = [];
+            // uniqDates[list[i].time.split(" ")[0]].push(list[i]);
+            vik.push(list[i].time.split(" ")[0]);
+            console.log("in loop :"+ list[i].time.split(" ")[0]);
+        }
+        // this.uniqDates = output;
+        console.log("uniqDates : "+ vik);
+        return vik;
+      }
+
+      formatDate(d){
+        var day = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+        var month = ["January", "February", "March", "April", "May", "June", "July", "August", "Septemper", "October", "November", "December"];
+        var fd = new Date(d);
+        // var fd1 = fd.split(" ");
+        // console.log("--------------"+ fd1);
+        var year = 1900;
+        year+=fd.getYear();
+        return day[fd.getDay()] +", "+ month[fd.getMonth()] +" "+ fd.getDate() +", "+ year;
+      }
+
+      formatTime(time){
+        // var time = t.split(" ")[1];
+        var date = new Date(time);
+        var hours = date.getHours();
+        var minutes = date.getMinutes();
+        var ampm = hours >= 12 ? 'PM' : 'AM';
+        hours = hours % 12;
+        hours = hours ? hours : 12; // the hour '0' should be '12'
+        minutes = minutes < 10 ? '0'+minutes : minutes;
+        var strTime = hours + ':' + minutes + ' ' + ampm;
+        hours++;
+        var endTime = hours + ':' + minutes + ' ' + ampm;
+        return strTime + " - "+ endTime +" EDT";
+      }
+      formatT(t){
+        return t.split(" ")[0];
+      }
 
 
-//   this.uniqDates.sort(function(a,b){
-//   // Turn your strings into dates, and then subtract them
-//   // to get a value that is either negative, positive, or zero.
-//   return new Date(b) - new Date(a);
-// });
-  console.log("unique date : "+ JSON.stringify(this.output) );
-  }
+  } // end of class
 
 
 
+  //
+  // formatObj():any {
+  //   console.log("format called.. ");
+  //   var dates = [], l = this.channelList.length, i;
+  //   this.uniqDates = [];
+  //   for( i=0; i<l; i++) {
+  //       let date = this.channelList[i].time.split(" ")[0];
+  //       if( dates[this.channelList[i].time.split(" ")[0]]) {
+  //         this.uniqDates[this.channelList[i].time.split(" ")[0]].push(this.channelList[i]);
+  //         continue
+  //       };
+  //       dates[this.channelList[i].time.split(" ")[0]] = true;
+  //       this.uniqDates[this.channelList[i].time.split(" ")[0]] = [];
+  //       this.uniqDates[this.channelList[i].time.split(" ")[0]].push(this.channelList[i]);
+  //       console.log("in loop :"+ this.uniqDates);
+  //   }
+  //   // this.uniqDates = output;
+  //   console.log("uniqDates : "+ this.uniqDates);
+  // }
 
 
-  formatObj(list):any {
-    console.log("format called.. ");
-    var dates = [], l = list.length, i;
-    this.output = [];
-    for( i=0; i<l; i++) {
-        let date = list[i].time.split(" ")[0];
-        if( dates[list[i].time.split(" ")[0]]) {
-          this.output[list[i].time.split(" ")[0]].push(list[i]);
-          continue
-        };
-        dates[list[i].time.split(" ")[0]] = true;
-        // output.push(list[i].time.split(" ")[0]);
-        this.output[list[i].time.split(" ")[0]] = [];
-        this.output[list[i].time.split(" ")[0]].push(list[i]);
-    }
-
-    console.log(" out put :" + this.output);
-    return this.output;
-  }
-
-// let obj ={
-//   1: [
-//     {id:1}, {id:2}, {id:3}
-//   ],
-//   2: [
-//     {id:1,}, {id:3}
-//   ]
 // }
-
-
-
-
-}

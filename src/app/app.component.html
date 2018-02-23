@@ -11,32 +11,31 @@
 
 </style>
 <body>
-  uniqDates : {{output|json}}
   <div class="container">
 
-        <div class="main-row" >
+        <div class="main-row" *ngFor="let date of uniqDates">
           <div class="row">
-            <h3>{{date}}</h3>
+            <h3>{{formatDate(date)}}</h3>
           </div>
-          <div class="row row-content" *ngFor="let list of channelList">
-            <div class="col-lg-1 col-md-1">
-              <img [src]="list.subjectPhotoUrl" class="subject-photo"/>
-            </div>
-            <div class="col-lg-7 col-md-7">
-              <div class="title">{{list.title}}</div>
-              <div class="description">
-                {{list.description}}
+          <div class="row row-content" *ngFor="let list of channelList | myfilter:date">
+              <div class="col-lg-1 col-md-1">
+                <img [src]="list.subjectPhotoUrl" class="subject-photo"/>
               </div>
-            </div>
-            <div class="col-lg-2 col-md-2">
-              <span>
-                <img [src]="list.instructorPhotoUrl" class="subject-photo"/>
-              </span>
-              <span class="inst-font">{{list.instructorName}}</span>
-            </div>
-            <div class="col-lg-2 col-md-2">
-              2016-01-03 22:00:00
-            </div>
+              <div class="col-lg-6 col-md-6">
+                <div class="title">{{list.title}}</div>
+                <div class="description">
+                  {{list.description}}
+                </div>
+              </div>
+              <div class="col-lg-2 col-md-2">
+                <span>
+                  <img [src]="list.instructorPhotoUrl" class="subject-photo"/>
+                </span>
+                <span class="inst-font">{{list.instructorName}}</span>
+              </div>
+              <div class="col-lg-3 col-md-3">
+                {{formatTime(list.time)}}
+              </div>
           </div>
       </div>
 
