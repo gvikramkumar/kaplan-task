@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import * as moment from 'moment';
+// import * as moment from 'moment';
 
 @Component({
   selector: 'app-root',
@@ -55,8 +55,8 @@ export class AppComponent implements OnInit{
         var fd = new Date(d);
         // var fd1 = fd.split(" ");
         // console.log("--------------"+ fd1);
-        var year = 1900;
-        year+=fd.getYear();
+        // var year = 1900;
+        var year = fd.getFullYear();
         return day[fd.getDay()] +", "+ month[fd.getMonth()] +" "+ fd.getDate() +", "+ year;
       }
 
@@ -68,10 +68,11 @@ export class AppComponent implements OnInit{
         var ampm = hours >= 12 ? 'PM' : 'AM';
         hours = hours % 12;
         hours = hours ? hours : 12; // the hour '0' should be '12'
-        minutes = minutes < 10 ? '0'+minutes : minutes;
-        var strTime = hours + ':' + minutes + ' ' + ampm;
+        // minutes = minutes < 10 ? '0'+minutes : minutes;
+        var minStr = minutes < 10 ? '0'+minutes : minutes;
+        var strTime = hours + ':' + minStr + ' ' + ampm;
         hours++;
-        var endTime = hours + ':' + minutes + ' ' + ampm;
+        var endTime = hours + ':' + minStr + ' ' + ampm;
         return strTime + " - "+ endTime +" EDT";
       }
       formatT(t){

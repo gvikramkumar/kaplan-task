@@ -4,14 +4,14 @@
   margin: 4%;
   border: none;
 }
-.card-content{
+/*.card-content{
   border: solid 1px #80808078;
   padding-top: 1%;
   padding-bottom: 1%;
   background-color: white;
-}
+}*/
 .row-content{
-  border: solid 1px #8080801f;
+  border: solid 1px lightgray;
   padding-top: 1%;
   padding-bottom: 1%;
   background-color: white;
